@@ -5,17 +5,28 @@ import "fmt"
 func main () {
 main_arr:= [3][3]string {
 
-{"_", "_", "X"},
-{"O","_","X"},
-{"O","X","X"}}
-tick_print(main_arr)
+{"_", "O", "X"},
+{"O","X","_"},
+{"X","O","X"}}
+//tick_print(main_arr)
+fmt.Println()
+coordinate(main_arr)
 fmt.Println()
 fmt.Println("Выйграл по горизонтали - " + X_win_or_loose(main_arr))
 fmt.Println()
 fmt.Println("Выйграл по вертикали - " + Y_win_or_loose(main_arr))
 fmt.Println()
 fmt.Println("Выйграл по диагонали - " + Z_win_or_loose(main_arr))
+fmt.Println()
+fmt.Println("Выйграл - " + result(main_arr))
 }
+
+func result (main_arr [3][3]string) string {
+   if X_win_or_loose(main_arr) == "X" || Y_win_or_loose(main_arr) == "X" || Z_win_or_loose(main_arr) == "X" { return "X"
+   } else if X_win_or_loose(main_arr) == "O" || Y_win_or_loose(main_arr) == "O" || Z_win_or_loose(main_arr) == "O" { return "O"
+} else { return "_" }
+}
+
 // печатает поле игры
 func tick_print (main_arr [3][3]string) {
 for x:=0; x<3; x++ {
@@ -25,12 +36,27 @@ for x:=0; x<3; x++ {
    fmt.Println()
    }
 }
+
+   func coordinate (main_arr [3][3]string) {
+      coor:=0
+      for y:=0; y<3; y++ {
+         for x:=0; x<3; x++ {
+            coor += 1
+            switch main_arr[y][x] {
+            case "X": fmt.Print("X")
+            case "O": fmt.Print("O")
+            case "_": fmt.Print(coor)
+            }
+         }
+         fmt.Println()
+      } 
+      }
 // печатает кто выйграл по горизонтали 
 func X_win_or_loose (main_arr [3][3]string) string {
-for x:=0; x<3; x++ {
-X_check:=X_same_el(main_arr, x)
-if X_check && main_arr[x][0] == "X" { return "X"
-} else if X_check  && main_arr[x][0] == "O" { return "O" 
+for y:=0; y<3; y++ {
+X_check:=X_same_el(main_arr, y)
+if X_check && main_arr[y][0] == "X" { return "X"
+} else if X_check  && main_arr[y][0] == "O" { return "O" 
 } else { continue }
 }
 return "_" 
@@ -45,10 +71,10 @@ func X_same_el (main_arr [3][3]string, y int) bool {
    }
 // печатает кто выйграл по вертикали
 func Y_win_or_loose (main_arr [3][3]string) string {
-   for y:=0; y<3; y++ {
-      Y_check:=Y_same_el(main_arr, y)
-      if Y_check && main_arr[0][y] == "X" { return "X"
-      } else if Y_check && main_arr[0][y] == "O" { return "O"
+   for x:=0; x<3; x++ {
+      Y_check:=Y_same_el(main_arr, x)
+      if Y_check && main_arr[0][x] == "X" { return "X"
+      } else if Y_check && main_arr[0][x] == "O" { return "O"
    } else { continue }
    
    }
@@ -62,13 +88,15 @@ func Y_same_el (main_arr [3][3]string, x int) bool {
    }
    return true
 }
+// печатает кто выйграл по диагонали
 func Z_win_or_loose (main_arr [3][3]string) string {
-   for 
-   Z_check:=Z_same_el(main_arr, z)
-
-}
-
-
+	for y:=0; y<3; y++ {
+	if main_arr[0][0]  == "X" && main_arr[1][1]  == "X" && main_arr[2][2]  == "X" || main_arr[0][2]  == "X" && main_arr[1][1] == "X" && main_arr[2][0]  == "X" { return "X"
+ } else if main_arr[0][0] == "O" && main_arr[1][1] == "O" && main_arr[2][2] == "O" || main_arr[0][2] == "O" && main_arr[1][1] == "O" && main_arr[2][0]  == "O" { return "O"
+ } else { continue }
+ }
+ return "_"
+ }
 
 /*func coordinate (main_arr [3][3]string, j int) string {
 for i:=0
