@@ -8,8 +8,9 @@ main_arr:= [3][3]string {
 {"_", "O", "X"},
 {"O","X","_"},
 {"X","O","X"}}
-//tick_print(main_arr)
+tick_print(main_arr)
 fmt.Println()
+
 coordinate(main_arr)
 fmt.Println()
 fmt.Println("Выйграл по горизонтали - " + X_win_or_loose(main_arr))
@@ -19,13 +20,59 @@ fmt.Println()
 fmt.Println("Выйграл по диагонали - " + Z_win_or_loose(main_arr))
 fmt.Println()
 fmt.Println("Выйграл - " + result(main_arr))
+fmt.Println()
 }
+/*fmt.Println(all_moves(main_arr, "X"))
+fmt.Println()
+fmt.Println(all_moves(main_arr, "O"))
+}
+*/
 
 func result (main_arr [3][3]string) string {
    if X_win_or_loose(main_arr) == "X" || Y_win_or_loose(main_arr) == "X" || Z_win_or_loose(main_arr) == "X" { return "X"
    } else if X_win_or_loose(main_arr) == "O" || Y_win_or_loose(main_arr) == "O" || Z_win_or_loose(main_arr) == "O" { return "O"
 } else { return "_" }
 }
+
+
+/*xxx
+0x_
+___
+
+
+xxx
+0x0
+___
+
+
+xxx
+0x_
+0__
+
+x:=42
+fmt.print(int x)
+
+tutorial hell
+
+*/
+
+func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
+var boards[][3][3]string
+for y:=0; y<3; y++ {
+ for x:=0; x<3; x++ {
+ if main_arr[y][x] == "_" { main_arr[y][x] = sign }
+ }
+ }
+ boards=append(boards, main_arr)
+ return boards
+ }
+ 
+ func print_all_moves(boards [][3][3]string){
+ for b:=0; b<len(boards); b++ {
+ fmt.Print(tick_print(boards[b]))
+ }
+ fmt.Println()
+ }
 
 // печатает поле игры
 func tick_print (main_arr [3][3]string) {
@@ -51,7 +98,7 @@ for x:=0; x<3; x++ {
          fmt.Println()
       } 
       }
-// печатает кто выйграл по горизонтали 
+// возвращает кто выйграл по горизонтали 
 func X_win_or_loose (main_arr [3][3]string) string {
 for y:=0; y<3; y++ {
 X_check:=X_same_el(main_arr, y)
@@ -69,7 +116,7 @@ func X_same_el (main_arr [3][3]string, y int) bool {
    }
    return true
    }
-// печатает кто выйграл по вертикали
+// возвращает кто выйграл по вертикали
 func Y_win_or_loose (main_arr [3][3]string) string {
    for x:=0; x<3; x++ {
       Y_check:=Y_same_el(main_arr, x)
@@ -88,7 +135,7 @@ func Y_same_el (main_arr [3][3]string, x int) bool {
    }
    return true
 }
-// печатает кто выйграл по диагонали
+// возвращает кто выйграл по диагонали
 func Z_win_or_loose (main_arr [3][3]string) string {
 	for y:=0; y<3; y++ {
 	if main_arr[0][0]  == "X" && main_arr[1][1]  == "X" && main_arr[2][2]  == "X" || main_arr[0][2]  == "X" && main_arr[1][1] == "X" && main_arr[2][0]  == "X" { return "X"
