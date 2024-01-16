@@ -5,13 +5,15 @@ import "fmt"
 func main () {
 main_arr:= [3][3]string {
 
-{"_", "O", "X"},
-{"O","X","_"},
-{"X","O","X"}}
+{"X", "O", "O"},
+{"O","X","X"},
+{"X","_","O"}}
 tick_print(main_arr)
 fmt.Println()
 
 coordinate(main_arr)
+fmt.Println()
+fmt.Println(check_tick(main_arr))
 fmt.Println()
 fmt.Println("Выйграл по горизонтали - " + X_win_or_loose(main_arr))
 fmt.Println()
@@ -20,7 +22,6 @@ fmt.Println()
 fmt.Println("Выйграл по диагонали - " + Z_win_or_loose(main_arr))
 fmt.Println()
 fmt.Println("Выйграл - " + result(main_arr))
-fmt.Println()
 }
 /*fmt.Println(all_moves(main_arr, "X"))
 fmt.Println()
@@ -56,7 +57,7 @@ tutorial hell
 
 */
 
-func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
+/*func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
 var boards[][3][3]string
 for y:=0; y<3; y++ {
  for x:=0; x<3; x++ {
@@ -73,7 +74,7 @@ for y:=0; y<3; y++ {
  }
  fmt.Println()
  }
-
+*/
 // печатает поле игры
 func tick_print (main_arr [3][3]string) {
 for x:=0; x<3; x++ {
@@ -145,9 +146,15 @@ func Z_win_or_loose (main_arr [3][3]string) string {
  return "_"
  }
 
-/*func coordinate (main_arr [3][3]string, j int) string {
-for i:=0
-
+func check_tick (main_arr [3][3]string) (string, bool) {
+   for y:=0; y<3; y++ {
+      for x:=0; x<3; x++ {
+         if main_arr[y][x] != "_"  { return "ничья", true
+         } else { continue }
+      }
+   }
+   return "продолжайте игру", false 
+}
 
 /*func check_tick (main_arr [3][3]string) bool {
 //если нет "_" , то ход невозможен (ничья)//
