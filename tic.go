@@ -6,14 +6,13 @@ func main () {
 main_arr:= [3][3]string {
 
 {"X", "O", "O"},
-{"O","X","X"},
+{"O","X","_"},
 {"X","_","O"}}
-tick_print(main_arr)
+print_board(main_arr)
 fmt.Println()
 
 coordinate(main_arr)
 fmt.Println()
-fmt.Println(check_tick(main_arr))
 fmt.Println()
 fmt.Println("Выйграл по горизонтали - " + X_win_or_loose(main_arr))
 fmt.Println()
@@ -21,15 +20,18 @@ fmt.Println("Выйграл по вертикали - " + Y_win_or_loose(main_ar
 fmt.Println()
 fmt.Println("Выйграл по диагонали - " + Z_win_or_loose(main_arr))
 fmt.Println()
-fmt.Println("Выйграл - " + result(main_arr))
-}
-/*fmt.Println(all_moves(main_arr, "X"))
+fmt.Println("Выйграл - " + win_or_loose(main_arr))
+fmt.Println()
+fmt.Println(is_full(main_arr))
+fmt.Println()
+print_boards(all_moves(main_arr,"X"))
+fmt.Println(all_moves(main_arr, "X"))
 fmt.Println()
 fmt.Println(all_moves(main_arr, "O"))
 }
-*/
 
-func result (main_arr [3][3]string) string {
+
+func win_or_loose (main_arr [3][3]string) string {
    if X_win_or_loose(main_arr) == "X" || Y_win_or_loose(main_arr) == "X" || Z_win_or_loose(main_arr) == "X" { return "X"
    } else if X_win_or_loose(main_arr) == "O" || Y_win_or_loose(main_arr) == "O" || Z_win_or_loose(main_arr) == "O" { return "O"
 } else { return "_" }
@@ -57,26 +59,25 @@ tutorial hell
 
 */
 
-/*func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
+func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
 var boards[][3][3]string
 for y:=0; y<3; y++ {
  for x:=0; x<3; x++ {
- if main_arr[y][x] == "_" { main_arr[y][x] = sign }
+ if main_arr[y][x] == "_" { ma_copy:=main_arr; ma_copy[y][x] = sign; boards=append(boards, ma_copy) }
  }
  }
- boards=append(boards, main_arr)
  return boards
  }
  
- func print_all_moves(boards [][3][3]string){
+ func print_boards(boards [][3][3]string){
  for b:=0; b<len(boards); b++ {
- fmt.Print(tick_print(boards[b]))
+ print_board(boards[b])
  }
  fmt.Println()
  }
-*/
+
 // печатает поле игры
-func tick_print (main_arr [3][3]string) {
+func print_board (main_arr [3][3]string) {
 for x:=0; x<3; x++ {
    for y:=0; y<3; y++ {
    fmt.Print(main_arr[x][y])
@@ -146,14 +147,14 @@ func Z_win_or_loose (main_arr [3][3]string) string {
  return "_"
  }
 
-func check_tick (main_arr [3][3]string) (string, bool) {
+func is_full (main_arr [3][3]string) bool {
    for y:=0; y<3; y++ {
       for x:=0; x<3; x++ {
-         if main_arr[y][x] != "_"  { return "ничья", true
+         if main_arr[y][x] == "_" { return false
          } else { continue }
       }
    }
-   return "продолжайте игру", false 
+   return true 
 }
 
 /*func check_tick (main_arr [3][3]string) bool {
