@@ -5,15 +5,17 @@ import "fmt"
 func main () {
 main_arr:= [3][3]string {
 
-{"X", "O", "O"},
-{"O","X","_"},
-{"X","_","O"}}
+{"X", "O", "X"},
+{"O","O","X"},
+{"_","_","_"}}
+number_arr:= []int{6,78,32,567,1}
 print_board(main_arr)
 fmt.Println()
-
 coordinate(main_arr)
 fmt.Println()
-fmt.Println()
+fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x<y}))
+fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x>y}))
+/*fmt.Println()
 fmt.Println("Выйграл по горизонтали - " + X_win_or_loose(main_arr))
 fmt.Println()
 fmt.Println("Выйграл по вертикали - " + Y_win_or_loose(main_arr))
@@ -28,6 +30,9 @@ print_boards(all_moves(main_arr,"X"))
 fmt.Println(all_moves(main_arr, "X"))
 fmt.Println()
 fmt.Println(all_moves(main_arr, "O"))
+fmt.Println()
+fmt.Println(count_moves(main_arr,"X"))
+*/
 }
 
 
@@ -37,27 +42,32 @@ func win_or_loose (main_arr [3][3]string) string {
 } else { return "_" }
 }
 
+func another_player (player string) string {
+if player == "X" {return "O"
+   } else { return "X"}
+}
 
-/*xxx
-0x_
-___
+func count_moves (main_arr [3][3]string, player string) int {
+//main_arr:=level[i]
+sum_of_levels:=0
+if is_full(main_arr) == false && win_or_loose(main_arr) == "_"  {
+level:= all_moves(main_arr, "X")
+   for i:=0;i<len(level);i++ { 
+   sum_of_levels+=count_moves(level[i], another_player(player))
+   }
+}
+// добавляем начальную доску (1) к сумме остальных досок (вариантов ходов)
+return sum_of_levels+1
+}
 
-
-xxx
-0x0
-___
-
-
-xxx
-0x_
-0__
-
-x:=42
-fmt.print(int x)
-
-tutorial hell
-
-*/
+func max_or_min_element (arr []int, more_or_less func (int, int) bool ) int {
+   m:=arr[0]
+   for i:=1; i<len(arr); i++ {
+   if more_or_less(m, arr[i]) { continue 
+   } else { m=arr[i] }
+}
+return m
+}
 
 func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
 var boards[][3][3]string
@@ -86,7 +96,7 @@ for x:=0; x<3; x++ {
    }
 }
 
-   func coordinate (main_arr [3][3]string) {
+func coordinate (main_arr [3][3]string) {
       coor:=0
       for y:=0; y<3; y++ {
          for x:=0; x<3; x++ {
@@ -157,30 +167,3 @@ func is_full (main_arr [3][3]string) bool {
    return true 
 }
 
-/*func check_tick (main_arr [3][3]string) bool {
-//если нет "_" , то ход невозможен (ничья)//
-}
-*/
-
-/*x==true  -> x
-
-x=true
-true=true -> true
-x=false
-false=true -> false
-*/
-
-/*
-x1o
-o45
-oox
-4
-*/
-
-/*xo_
-ox_
-_ox
-
-arr:= [] string {}
-[кол-во]тип_элеметов
-*/
