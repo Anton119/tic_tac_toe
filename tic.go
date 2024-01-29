@@ -3,6 +3,7 @@ package main
 import "fmt" 
 
 func main () {
+//X - AI, O - HUMAN
 main_arr:= [3][3]string {
 
 {"X", "O", "X"},
@@ -51,7 +52,7 @@ func count_moves (main_arr [3][3]string, player string) int {
 //main_arr:=level[i]
 sum_of_levels:=0
 if is_full(main_arr) == false && win_or_loose(main_arr) == "_"  {
-level:= all_moves(main_arr, "X")
+level:= all_moves(main_arr, player)
    for i:=0;i<len(level);i++ { 
    sum_of_levels+=count_moves(level[i], another_player(player))
    }
@@ -60,6 +61,28 @@ level:= all_moves(main_arr, "X")
 return sum_of_levels+1
 }
 
+func evaluate_moves (main_arr[3][3]string, player string) int {
+if win_or_loose(main_arr) == "X" && is_full(main_arr) == false { return 1
+   } else if win_or_loose(main_arr) == "O" && is_full(main_arr) == false { return -1
+   } else if is_full(main_arr) == true { return 0
+   } else if evaluation:=all_moves(main_arr, player)
+             for i:=0; i<len(evaluation); i++ {
+             sum_of_evaluations:=append(sum_of_evaluations, evaluate_moves(evaluation[i])
+             }
+                if player == "X" { return  max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x>y})
+                } else if player == "O" { return max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x<y})}
+}
+
+//ищем доску для максиальной оценки 
+func best_board (main_arr[3][3]string, player string) [3][3]string {
+boards_tocheck:=all_moves(main_arr)
+mboard:=boards_tocheck[0]
+ev_boards:=evaluation_moves(mboard)
+   for i:=0; i<len(boards_tocheck); i++ {
+   if ev_boards >  
+   eveluate_moves(boards_tocheck[i])
+
+//добавить доп переменную для bestboard
 func max_or_min_element (arr []int, more_or_less func (int, int) bool ) int {
    m:=arr[0]
    for i:=1; i<len(arr); i++ {
