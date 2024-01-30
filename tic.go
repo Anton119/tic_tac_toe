@@ -54,7 +54,7 @@ sum_of_levels:=0
 if is_full(main_arr) == false && win_or_loose(main_arr) == "_"  {
 level:= all_moves(main_arr, player)
    for i:=0;i<len(level);i++ { 
-   sum_of_levels+=count_moves(level[i], another_player(player))
+      sum_of_levels+=count_moves(level[i], another_player(player))
    }
 }
 // добавляем начальную доску (1) к сумме остальных досок (вариантов ходов)
@@ -79,39 +79,39 @@ boards_tocheck:=all_moves(main_arr)
 mboard:=boards_tocheck[0]
 ev_boards:=evaluation_moves(mboard)
    for i:=0; i<len(boards_tocheck); i++ {
-   if ev_boards >  
-   eveluate_moves(boards_tocheck[i])
+      if ev_boards >  
+      eveluate_moves(boards_tocheck[i])
 
 //добавить доп переменную для bestboard
 func max_or_min_element (arr []int, more_or_less func (int, int) bool ) int {
-   m:=arr[0]
+m:=arr[0]
    for i:=1; i<len(arr); i++ {
-   if more_or_less(m, arr[i]) { continue 
-   } else { m=arr[i] }
-}
+      if more_or_less(m, arr[i]) { continue 
+      } else { m=arr[i] }
+   }
 return m
 }
 
 func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
 var boards[][3][3]string
-for y:=0; y<3; y++ {
- for x:=0; x<3; x++ {
- if main_arr[y][x] == "_" { ma_copy:=main_arr; ma_copy[y][x] = sign; boards=append(boards, ma_copy) }
- }
- }
+   for y:=0; y<3; y++ {
+      for x:=0; x<3; x++ {
+        if main_arr[y][x] == "_" { ma_copy:=main_arr; ma_copy[y][x] = sign; boards=append(boards, ma_copy) }
+        }
+   }
  return boards
  }
  
- func print_boards(boards [][3][3]string){
- for b:=0; b<len(boards); b++ {
- print_board(boards[b])
- }
- fmt.Println()
- }
+func print_boards(boards [][3][3]string){
+for b:=0; b<len(boards); b++ {
+   print_board(boards[b])
+    }
+fmt.Println()
+}
 
 // печатает поле игры
 func print_board (main_arr [3][3]string) {
-for x:=0; x<3; x++ {
+  for x:=0; x<3; x++ {
    for y:=0; y<3; y++ {
    fmt.Print(main_arr[x][y])
    }
