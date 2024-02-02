@@ -34,6 +34,7 @@ fmt.Println(all_moves(main_arr, "O"))
 fmt.Println()
 fmt.Println(count_moves(main_arr,"X"))
 */
+fmt.Println(evaluate_moves(main_arr,"X" ))
 }
 
 
@@ -48,6 +49,7 @@ if player == "X" {return "O"
    } else { return "X"}
 }
 
+// (тренировочная функция) считает все возможные варианты для ОСТАЛЬНЫХ ШАГОВ
 func count_moves (main_arr [3][3]string, player string) int {
 //main_arr:=level[i]
 sum_of_levels:=0
@@ -61,26 +63,34 @@ level:= all_moves(main_arr, player)
 return sum_of_levels+1
 }
 
+//дополненная функция count_moves , реализующая алгоритм min_max
 func evaluate_moves (main_arr[3][3]string, player string) int {
 if win_or_loose(main_arr) == "X" && is_full(main_arr) == false { return 1
    } else if win_or_loose(main_arr) == "O" && is_full(main_arr) == false { return -1
-   } else if is_full(main_arr) == true { return 0
-   } else if evaluation:=all_moves(main_arr, player)
+   } else if is_full(main_arr) == true { return 0 }
+       evaluation:=all_moves(main_arr, player)
+       var sum_of_evaluations []int
              for i:=0; i<len(evaluation); i++ {
-             sum_of_evaluations:=append(sum_of_evaluations, evaluate_moves(evaluation[i])
+             // запись результатов оценок веток в массив                  // player = another_player(player)
+             sum_of_evaluations=append(sum_of_evaluations, evaluate_moves(evaluation[i], another_player(player) ))
              }
-                if player == "X" { return  max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x>y})
-                } else if player == "O" { return max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x<y})}
+                fmt.Println(sum_of_evaluations)
+                   if player == "X" { return  max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x>y})
+                   } else { return max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x<y})} 
 }
+// 3+1
+// 3+(2*4)
+// 3+(x:=1)
 
 //ищем доску для максиальной оценки 
-func best_board (main_arr[3][3]string, player string) [3][3]string {
+/*func best_board (main_arr[3][3]string, player string) [3][3]string {
 boards_tocheck:=all_moves(main_arr)
 mboard:=boards_tocheck[0]
 ev_boards:=evaluation_moves(mboard)
    for i:=0; i<len(boards_tocheck); i++ {
       if ev_boards >  
       eveluate_moves(boards_tocheck[i])
+*/
 
 //добавить доп переменную для bestboard
 func max_or_min_element (arr []int, more_or_less func (int, int) bool ) int {
@@ -92,6 +102,7 @@ m:=arr[0]
 return m
 }
 
+// создали массив досок , все возможные варианты одного шага
 func all_moves (main_arr [3][3]string, sign string)[][3][3]string {
 var boards[][3][3]string
    for y:=0; y<3; y++ {
