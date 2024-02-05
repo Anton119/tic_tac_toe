@@ -6,16 +6,16 @@ func main () {
 //X - AI, O - HUMAN
 main_arr:= [3][3]string {
 
-{"X", "O", "X"},
+{"X", "O", "_"},
 {"O","O","X"},
 {"_","_","_"}}
-number_arr:= []int{6,78,32,567,1}
+//number_arr:= []int{6,78,32,567,1}
 print_board(main_arr)
 fmt.Println()
 coordinate(main_arr)
 fmt.Println()
-fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x<y}))
-fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x>y}))
+//fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x<y}))
+//fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x>y}))
 /*fmt.Println()
 fmt.Println("Выйграл по горизонтали - " + X_win_or_loose(main_arr))
 fmt.Println()
@@ -35,6 +35,8 @@ fmt.Println()
 fmt.Println(count_moves(main_arr,"X"))
 */
 fmt.Println(evaluate_moves(main_arr,"X" ))
+fmt.Println()
+print_board(best_board(main_arr, "X"))
 }
 
 
@@ -83,14 +85,22 @@ if win_or_loose(main_arr) == "X" && is_full(main_arr) == false { return 1
 // 3+(x:=1)
 
 //ищем доску для максиальной оценки 
-/*func best_board (main_arr[3][3]string, player string) [3][3]string {
-boards_tocheck:=all_moves(main_arr)
+func best_board (main_arr[3][3]string, player string) [3][3]string {
+boards_tocheck:=all_moves(main_arr, player)
 mboard:=boards_tocheck[0]
-ev_boards:=evaluation_moves(mboard)
+ev_boards:=evaluate_moves(mboard, another_player(player))
    for i:=0; i<len(boards_tocheck); i++ {
-      if ev_boards >  
-      eveluate_moves(boards_tocheck[i])
-*/
+      var_board:=evaluate_moves(boards_tocheck[i], another_player(player))
+      if ev_boards < var_board { ev_boards=var_board; mboard=boards_tocheck[i] }
+      }
+   return mboard
+}
+
+// print("xxx",end="yyy") ==  fmt.Print("xxx"); fmt.Print("yyy")
+// print("xxx",end="") == fmt.Print("xxx")
+
+
+
 
 //добавить доп переменную для bestboard
 func max_or_min_element (arr []int, more_or_less func (int, int) bool ) int {
@@ -120,7 +130,7 @@ for b:=0; b<len(boards); b++ {
 fmt.Println()
 }
 
-// печатает поле игры
+// печатает 1 доску 
 func print_board (main_arr [3][3]string) {
   for x:=0; x<3; x++ {
    for y:=0; y<3; y++ {
