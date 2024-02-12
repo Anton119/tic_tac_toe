@@ -7,8 +7,8 @@ func main () {
 main_arr:= [3][3]string {
 
 {"X", "O", "_"},
-{"O","O","X"},
-{"_","_","_"}}
+{"_","_","_"},
+{"O","O","_"}}
 //number_arr:= []int{6,78,32,567,1}
 print_board(main_arr)
 fmt.Println()
@@ -37,6 +37,10 @@ fmt.Println(count_moves(main_arr,"X"))
 fmt.Println(evaluate_moves(main_arr,"X" ))
 fmt.Println()
 print_board(best_board(main_arr, "X"))
+fmt.Println("???????")
+print_boards(all_moves(main_arr,"X"))
+fmt.Println()
+str_print_board(all_moves(main_arr, "X"))
 }
 
 
@@ -67,8 +71,8 @@ return sum_of_levels+1
 
 //дополненная функция count_moves , реализующая алгоритм min_max
 func evaluate_moves (main_arr[3][3]string, player string) int {
-if win_or_loose(main_arr) == "X" && is_full(main_arr) == false { return 1
-   } else if win_or_loose(main_arr) == "O" && is_full(main_arr) == false { return -1
+if win_or_loose(main_arr) == "X" /*&& is_full(main_arr) == false*/ { return 1
+   } else if win_or_loose(main_arr) == "O"/* && is_full(main_arr) == false*/ { return -1
    } else if is_full(main_arr) == true { return 0 }
        evaluation:=all_moves(main_arr, player)
        var sum_of_evaluations []int
@@ -126,6 +130,7 @@ var boards[][3][3]string
 func print_boards(boards [][3][3]string){
 for b:=0; b<len(boards); b++ {
    print_board(boards[b])
+   fmt.Println()
     }
 fmt.Println()
 }
@@ -139,6 +144,50 @@ func print_board (main_arr [3][3]string) {
    fmt.Println()
    }
 }
+
+
+/*x_x
+000
+xxx
+
+abc
+def
+ghi
+
+x_x  abc
+000  def
+xxx  ghi
+*/
+
+//выводит первую строчку каждой доски
+
+func str_print_board (boards [][3][3]string) {
+    /*fmt.Print(boards[0][0][0])
+    fmt.Print(boards[0][0][1])
+    fmt.Print(boards[0][0][2])
+    fmt.Println()
+    fmt.Print(boards[0][1][0])
+    fmt.Print(boards[0][1][1])
+    fmt.Print(boards[0][1][2])
+    fmt.Println()
+    fmt.Print(boards[0][2][0])
+    fmt.Print(boards[0][2][1])
+    fmt.Print(boards[0][2][2])
+*/
+for board:=0; board<len(boards); board++ {   
+   for y:=0; y<3; y++ {
+      for x:=0; x<3; x++ {
+      fmt.Print(boards[board][y][x])
+      }
+   fmt.Println()   
+   } 
+fmt.Print("   ")      
+}    
+}
+
+
+
+
 
 func coordinate (main_arr [3][3]string) {
       coor:=0
