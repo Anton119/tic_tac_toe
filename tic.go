@@ -162,27 +162,38 @@ xxx  ghi
 //выводит первую строчку каждой доски
 
 func str_print_board (boards [][3][3]string) {
-    /*fmt.Print(boards[0][0][0])
+  /*fmt.Print(boards[0][0][0])
     fmt.Print(boards[0][0][1])
     fmt.Print(boards[0][0][2])
+    fmt.Print("   ",boards[1][0][0])
+    fmt.Print(boards[1][0][1])
+    fmt.Print(boards[1][0][2])
     fmt.Println()
     fmt.Print(boards[0][1][0])
     fmt.Print(boards[0][1][1])
     fmt.Print(boards[0][1][2])
+    fmt.Print("   ",boards[1][1][0])
+    fmt.Print(boards[1][1][1])
+    fmt.Print(boards[1][1][2])
     fmt.Println()
     fmt.Print(boards[0][2][0])
     fmt.Print(boards[0][2][1])
     fmt.Print(boards[0][2][2])
+    fmt.Print("   ",boards[0][2][0])
+    fmt.Print(boards[0][2][1])
+    fmt.Print(boards[0][2][2])
+    fmt.Println()
 */
-for board:=0; board<len(boards); board++ {   
+
+for board:=0; board<len(boards)-1; board++ {   
    for y:=0; y<3; y++ {
       for x:=0; x<3; x++ {
       fmt.Print(boards[board][y][x])
       }
-   fmt.Println()   
+   fmt.Println("1")
    } 
-fmt.Print("   ")      
-}    
+   fmt.Println("2")
+  }
 }
 
 
