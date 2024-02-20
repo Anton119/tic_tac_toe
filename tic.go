@@ -34,14 +34,15 @@ fmt.Println(all_moves(main_arr, "O"))
 fmt.Println()
 fmt.Println(count_moves(main_arr,"X"))
 */
-fmt.Println(evaluate_moves(main_arr,"X" ))
+fmt.Println(evaluate_moves(main_arr,"X",0 ))
 fmt.Println()
 print_board(best_board(main_arr, "X"))
 fmt.Println("???????")
 print_boards(all_moves(main_arr,"X"))
 fmt.Println()
-str_print_board(all_moves(main_arr, "X"))
+//str_print_board(all_moves(main_arr, "X"))
 }
+
 
 
 func win_or_loose (main_arr [3][3]string) string {
@@ -70,19 +71,42 @@ return sum_of_levels+1
 }
 
 //дополненная функция count_moves , реализующая алгоритм min_max
-func evaluate_moves (main_arr[3][3]string, player string) int {
-if win_or_loose(main_arr) == "X" /*&& is_full(main_arr) == false*/ { return 1
-   } else if win_or_loose(main_arr) == "O"/* && is_full(main_arr) == false*/ { return -1
-   } else if is_full(main_arr) == true { return 0 }
+func evaluate_moves (main_arr[3][3]string, player string, level int) int {
+if win_or_loose(main_arr) == "X" /*&& is_full(main_arr) == false*/ {
+    fmt.Println("final level",level)
+    print_board(main_arr)
+    fmt.Println("+1")
+    return 1
+   } else if win_or_loose(main_arr) == "O"/* && is_full(main_arr) == false*/ {
+    fmt.Println("final level",level)
+    print_board(main_arr)
+    fmt.Println("-1")
+    return -1
+   } else if is_full(main_arr) == true {
+    fmt.Println("final level",level)
+    print_board(main_arr)
+    fmt.Println(" 0")
+    return 0 }
        evaluation:=all_moves(main_arr, player)
        var sum_of_evaluations []int
              for i:=0; i<len(evaluation); i++ {
              // запись результатов оценок веток в массив                  // player = another_player(player)
-             sum_of_evaluations=append(sum_of_evaluations, evaluate_moves(evaluation[i], another_player(player) ))
+             sum_of_evaluations=append(sum_of_evaluations, evaluate_moves(evaluation[i], another_player(player), level+1 ))
              }
-                fmt.Println(sum_of_evaluations)
+             fmt.Println("level ",level)
+             str_print_board(evaluation)
+                print_el(sum_of_evaluations)
                    if player == "X" { return  max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x>y})
                    } else { return max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x<y})} 
+}
+
+func print_el (arr[]int) {
+  for i:=0; i<len(arr); i++ {
+  if arr[i] == 1 { fmt.Print("+1","   ") 
+     } else if arr[i] == -1 { fmt.Print("-1","   ") 
+        } else if arr[i] == 0 { fmt.Print(" 0","   ")}
+  }
+  fmt.Println()
 }
 // 3+1
 // 3+(2*4)
@@ -92,9 +116,9 @@ if win_or_loose(main_arr) == "X" /*&& is_full(main_arr) == false*/ { return 1
 func best_board (main_arr[3][3]string, player string) [3][3]string {
 boards_tocheck:=all_moves(main_arr, player)
 mboard:=boards_tocheck[0]
-ev_boards:=evaluate_moves(mboard, another_player(player))
+ev_boards:=evaluate_moves(mboard, another_player(player),0)
    for i:=0; i<len(boards_tocheck); i++ {
-      var_board:=evaluate_moves(boards_tocheck[i], another_player(player))
+      var_board:=evaluate_moves(boards_tocheck[i], another_player(player),0)
       if ev_boards < var_board { ev_boards=var_board; mboard=boards_tocheck[i] }
       }
    return mboard
@@ -162,39 +186,32 @@ xxx  ghi
 //выводит первую строчку каждой доски
 
 func str_print_board (boards [][3][3]string) {
-  /*fmt.Print(boards[0][0][0])
-    fmt.Print(boards[0][0][1])
-    fmt.Print(boards[0][0][2])
-    fmt.Print("   ",boards[1][0][0])
-    fmt.Print(boards[1][0][1])
-    fmt.Print(boards[1][0][2])
-    fmt.Println()
-    fmt.Print(boards[0][1][0])
-    fmt.Print(boards[0][1][1])
-    fmt.Print(boards[0][1][2])
-    fmt.Print("   ",boards[1][1][0])
-    fmt.Print(boards[1][1][1])
-    fmt.Print(boards[1][1][2])
-    fmt.Println()
-    fmt.Print(boards[0][2][0])
-    fmt.Print(boards[0][2][1])
-    fmt.Print(boards[0][2][2])
-    fmt.Print("   ",boards[0][2][0])
-    fmt.Print(boards[0][2][1])
-    fmt.Print(boards[0][2][2])
-    fmt.Println()
-*/
-
-for board:=0; board<len(boards)-1; board++ {   
-   for y:=0; y<3; y++ {
+for y:=0; y<3; y++ {
+   for board:=0; board<len(boards); board++ {
       for x:=0; x<3; x++ {
-      fmt.Print(boards[board][y][x])
+         fmt.Print(boards[board][y][x])
       }
-   fmt.Println("1")
-   } 
-   fmt.Println("2")
-  }
+      fmt.Print("  ")
+   }
+   fmt.Println()
 }
+/*fmt.Println()
+fmt.Println("без цикла")
+fmt.Print(boards[0][0][0],boards[0][0][1],boards[0][0][2],"   ")
+fmt.Print(boards[1][0][0],boards[1][0][1],boards[1][0][2],"   ")
+fmt.Print(boards[2][0][0],boards[2][0][1],boards[2][0][2],"   ")
+fmt.Print(boards[3][0][0],boards[3][0][1],boards[3][0][2],"   ")  
+fmt.Print(boards[4][0][0],boards[4][0][1],boards[4][0][2],"   ")
+//новая строка
+fmt.Println()
+fmt.Print(boards[0][1][0],boards[0][1][1],boards[0][1][2],"   ")
+fmt.Print(boards[1][1][0],boards[1][1][1],boards[1][1][2],"   ")
+fmt.Print(boards[2][1][0],boards[2][1][1],boards[2][1][2],"   ")
+fmt.Print(boards[3][1][0],boards[3][1][1],boards[3][1][2],"   ")
+fmt.Print(boards[4][1][0],boards[4][1][1],boards[4][1][2],"   ")
+*/
+}
+
 
 
 
