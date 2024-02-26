@@ -6,17 +6,18 @@ func main () {
 //X - AI, O - HUMAN
 main_arr:= [3][3]string {
 
-{"X", "O", "_"},
-{"_","_","_"},
-{"O","O","_"}}
+{"X", "O", "X"},
+{"O","O","X"},
+{"_","_","_"}}
 //number_arr:= []int{6,78,32,567,1}
 print_board(main_arr)
 fmt.Println()
-coordinate(main_arr)
+//coordinate(main_arr)
 fmt.Println()
+fmt.Println("Выйграл - " + win_or_loose(main_arr))
 //fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x<y}))
 //fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x>y}))
-/*fmt.Println()
+/* fmt.Println()
 fmt.Println("Выйграл по горизонтали - " + X_win_or_loose(main_arr))
 fmt.Println()
 fmt.Println("Выйграл по вертикали - " + Y_win_or_loose(main_arr))
@@ -34,13 +35,16 @@ fmt.Println(all_moves(main_arr, "O"))
 fmt.Println()
 fmt.Println(count_moves(main_arr,"X"))
 */
-fmt.Println(evaluate_moves(main_arr,"X",0 ))
+//fmt.Println(evaluate_moves(main_arr,"X",0 ))
 fmt.Println()
-print_board(best_board(main_arr, "X"))
+//print_board(best_board(main_arr, "X"))
 fmt.Println("???????")
-print_boards(all_moves(main_arr,"X"))
+//print_boards(all_moves(main_arr,"X"))
 fmt.Println()
 //str_print_board(all_moves(main_arr, "X"))
+//print_board(make_a_move(main_arr, "O", 8))
+scan_and_insert_coordinate()
+
 }
 
 
@@ -73,17 +77,17 @@ return sum_of_levels+1
 //дополненная функция count_moves , реализующая алгоритм min_max
 func evaluate_moves (main_arr[3][3]string, player string, level int) int {
 if win_or_loose(main_arr) == "X" /*&& is_full(main_arr) == false*/ {
-    fmt.Println("final level",level)
+    fmt.Println("final level FOR X",level)
     print_board(main_arr)
     fmt.Println("+1")
     return 1
    } else if win_or_loose(main_arr) == "O"/* && is_full(main_arr) == false*/ {
-    fmt.Println("final level",level)
+    fmt.Println("final level FOR O",level)
     print_board(main_arr)
     fmt.Println("-1")
     return -1
    } else if is_full(main_arr) == true {
-    fmt.Println("final level",level)
+    fmt.Println("final level FOR TIE",level)
     print_board(main_arr)
     fmt.Println(" 0")
     return 0 }
@@ -114,13 +118,13 @@ func print_el (arr[]int) {
 
 //ищем доску для максиальной оценки 
 func best_board (main_arr[3][3]string, player string) [3][3]string {
-boards_tocheck:=all_moves(main_arr, player)
-mboard:=boards_tocheck[0]
-ev_boards:=evaluate_moves(mboard, another_player(player),0)
+   boards_tocheck:=all_moves(main_arr, player)
+   mboard:=boards_tocheck[0]
+   ev_boards:=evaluate_moves(mboard, another_player(player),0)
    for i:=0; i<len(boards_tocheck); i++ {
-      var_board:=evaluate_moves(boards_tocheck[i], another_player(player),0)
-      if ev_boards < var_board { ev_boards=var_board; mboard=boards_tocheck[i] }
-      }
+         var_board:=evaluate_moves(boards_tocheck[i], another_player(player),0)
+         if ev_boards < var_board { ev_boards=var_board; mboard=boards_tocheck[i] }
+   }
    return mboard
 }
 
@@ -212,11 +216,34 @@ fmt.Print(boards[4][1][0],boards[4][1][1],boards[4][1][2],"   ")
 */
 }
 
+func make_a_move (arr[3][3]string, player string, coordinate int) [3][3]string {
+var index int 
+    for y:=0; y<3; y++ {
+	for x:=0; x<3; x++ {
+	index += 1
+	if coordinate == index { arr[y][x] = player }
+	}
+    }
+// 3, X > перебирает доску / находит координату 3 / проставляет на коорд 3 знак Х     
+return arr
 
+}
 
+func scan_and_insert_coordinate () {
+var player_coordinate int
+arr :=[3][3]string{{"_","_","_"},{"_","_","_"},{"_","_","_"}}
+player := "X"  
+    fmt.Scan(&player_coordinate)
+    new_arr := make_a_move(arr, player, player_coordinate)
+	print_board(new_arr)
+}
 
+/*123
+45X
+789
 
-
+6 -> X
+*/
 func coordinate (main_arr [3][3]string) {
       coor:=0
       for y:=0; y<3; y++ {
