@@ -6,9 +6,9 @@ func main () {
 //X - AI, O - HUMAN
 main_arr:= [3][3]string {
 
-{"X", "O", "X"},
-{"O","O","X"},
-{"_","_","_"}}
+{"_", "_", "_"},
+{"X","O","X"},
+{"O","X","_"}}
 //number_arr:= []int{6,78,32,567,1}
 print_board(main_arr)
 fmt.Println()
@@ -37,21 +37,21 @@ fmt.Println(count_moves(main_arr,"X"))
 */
 //fmt.Println(evaluate_moves(main_arr,"X",0 ))
 fmt.Println()
-//print_board(best_board(main_arr, "X"))
+print_board(best_board(main_arr, "X"))
 fmt.Println("???????")
 //print_boards(all_moves(main_arr,"X"))
 fmt.Println()
 //str_print_board(all_moves(main_arr, "X"))
 //print_board(make_a_move(main_arr, "O", 8))
-scan_and_insert_coordinate()
+//scan_and_insert_coordinate(main_arr)
 
 }
 
 
 
 func win_or_loose (main_arr [3][3]string) string {
-   if X_win_or_loose(main_arr) == "X" || Y_win_or_loose(main_arr) == "X" || Z_win_or_loose(main_arr) == "X" { return "X"
-   } else if X_win_or_loose(main_arr) == "O" || Y_win_or_loose(main_arr) == "O" || Z_win_or_loose(main_arr) == "O" { return "O"
+   if rows_win_or_loose(main_arr) == "X" || columns_win_or_loose(main_arr) == "X" || diagonale_win_or_loose(main_arr) == "X" { return "X"
+   } else if rows_win_or_loose(main_arr) == "O" || columns_win_or_loose(main_arr) == "O" || diagonale_win_or_loose(main_arr) == "O" { return "O"
 } else { return "_" }
 }
 
@@ -116,7 +116,7 @@ func print_el (arr[]int) {
 // 3+(2*4)
 // 3+(x:=1)
 
-//ищем доску для максиальной оценки 
+//ищем доску для максиальной оценки + ход компьютера
 func best_board (main_arr[3][3]string, player string) [3][3]string {
    boards_tocheck:=all_moves(main_arr, player)
    mboard:=boards_tocheck[0]
@@ -199,23 +199,7 @@ for y:=0; y<3; y++ {
    }
    fmt.Println()
 }
-/*fmt.Println()
-fmt.Println("без цикла")
-fmt.Print(boards[0][0][0],boards[0][0][1],boards[0][0][2],"   ")
-fmt.Print(boards[1][0][0],boards[1][0][1],boards[1][0][2],"   ")
-fmt.Print(boards[2][0][0],boards[2][0][1],boards[2][0][2],"   ")
-fmt.Print(boards[3][0][0],boards[3][0][1],boards[3][0][2],"   ")  
-fmt.Print(boards[4][0][0],boards[4][0][1],boards[4][0][2],"   ")
-//новая строка
-fmt.Println()
-fmt.Print(boards[0][1][0],boards[0][1][1],boards[0][1][2],"   ")
-fmt.Print(boards[1][1][0],boards[1][1][1],boards[1][1][2],"   ")
-fmt.Print(boards[2][1][0],boards[2][1][1],boards[2][1][2],"   ")
-fmt.Print(boards[3][1][0],boards[3][1][1],boards[3][1][2],"   ")
-fmt.Print(boards[4][1][0],boards[4][1][1],boards[4][1][2],"   ")
-*/
 }
-
 func make_a_move (arr[3][3]string, player string, coordinate int) [3][3]string {
 var index int 
     for y:=0; y<3; y++ {
@@ -229,14 +213,39 @@ return arr
 
 }
 
-func scan_and_insert_coordinate () {
-var player_coordinate int
-arr :=[3][3]string{{"_","_","_"},{"_","_","_"},{"_","_","_"}}
-player := "X"  
-    fmt.Scan(&player_coordinate)
-    new_arr := make_a_move(arr, player, player_coordinate)
-	print_board(new_arr)
+func extract_from_arr (arr[3][3]string, coordinate int) string {
+var index int 
+    for y:=0; y<3; y++ {
+	for x:=0; x<3; x++ {
+	index +=1 
+	if coordinate == index { return arr[y][x] }
+	}
+    }
+    return "?"  
 }
+
+
+
+func scan_and_insert_coordinate (main_arr[3][3]string) {
+    var player_coordinate int
+    new_arr := [3][3]string{}
+    //arr :=[3][3]string{{"_","_","_"},{"_","_","_"},{"_","_","_"}}
+    player := "X"
+	for { 
+	    fmt.Scan(&player_coordinate)
+	    sign  := extract_from_arr(main_arr, player_coordinate)
+	    if sign == "_" { new_arr = make_a_move(main_arr, player, player_coordinate); break
+	    } else if sign == "O" { fmt.Println("Невозможно сделать ход."); fmt.Println("Сделайте ход еще раз")}
+
+	}
+		print_board(new_arr)
+}
+
+/*func switch_player () {
+	scan_and_insert_coordinate(main_arr)
+	beast_board(main_arr, "X")
+}
+*/
 
 /*123
 45X
@@ -259,51 +268,47 @@ func coordinate (main_arr [3][3]string) {
       } 
       }
 // возвращает кто выйграл по горизонтали 
-func X_win_or_loose (main_arr [3][3]string) string {
-for y:=0; y<3; y++ {
-X_check:=X_same_el(main_arr, y)
-if X_check && main_arr[y][0] == "X" { return "X"
-} else if X_check  && main_arr[y][0] == "O" { return "O" 
-} else { continue }
-}
+
+func rows_win_or_loose (main_arr [3][3]string) string {
+    for y:=0; y<3; y++ {
+	row_check:=row_same_el(main_arr, y)
+	if row_check && main_arr[y][0] == "X" { return "X"
+	} else if row_check  && main_arr[y][0] == "O" { return "O" 
+	} else { continue }
+	}
 return "_" 
 }
-// ищет похожий элемент для х
-func X_same_el (main_arr [3][3]string, y int) bool {
-   for x:=0; x<3-1; x++ {
-   if main_arr[y][x] != main_arr[y][x+1]  { return false 
-   } else { continue }
-   }
-   return true
-   }
+// ищет похожий элемент для rows 
+func row_same_el (main_arr [3][3]string, y int) bool {
+  return  main_arr[y][0] == main_arr[y][1] &&  main_arr[y][1] == main_arr[y][2]
+}
 // возвращает кто выйграл по вертикали
-func Y_win_or_loose (main_arr [3][3]string) string {
+func columns_win_or_loose (main_arr [3][3]string) string {
    for x:=0; x<3; x++ {
-      Y_check:=Y_same_el(main_arr, x)
-      if Y_check && main_arr[0][x] == "X" { return "X"
-      } else if Y_check && main_arr[0][x] == "O" { return "O"
+      column_check:=column_same_el(main_arr, x)
+      if column_check && main_arr[0][x] == "X" { return "X"
+      } else if column_check && main_arr[0][x] == "O" { return "O"
    } else { continue }
    
    }
    return "_"
 }
-// ищет похожий элемент для y
-func Y_same_el (main_arr [3][3]string, x int) bool {
-   for y:=0; y<3-1; y++ {
-      if main_arr[y][x] != main_arr[y+1][x] { return false 
-      } else { continue }
-   }
-   return true
+// ищет похожий элемент для columns
+func column_same_el (main_arr [3][3]string, x int) bool {
+      return  main_arr[0][x] == main_arr[1][x] && main_arr[1][x] == main_arr[2][x]
 }
 // возвращает кто выйграл по диагонали
-func Z_win_or_loose (main_arr [3][3]string) string {
-	for y:=0; y<3; y++ {
-	if main_arr[0][0]  == "X" && main_arr[1][1]  == "X" && main_arr[2][2]  == "X" || main_arr[0][2]  == "X" && main_arr[1][1] == "X" && main_arr[2][0]  == "X" { return "X"
- } else if main_arr[0][0] == "O" && main_arr[1][1] == "O" && main_arr[2][2] == "O" || main_arr[0][2] == "O" && main_arr[1][1] == "O" && main_arr[2][0]  == "O" { return "O"
- } else { continue }
- }
- return "_"
- }
+func diagonale_win_or_loose (main_arr [3][3]string) string {
+     diagonale_check := diagonale_same_el(main_arr) // создание переменной , чтобы не вызывать функцию еще раз
+     if diagonale_check { return main_arr[1][1]  // уже означает , что diagonale_check == true 
+     } else { return "_" } 
+}        
+
+
+func diagonale_same_el (main_arr[3][3]string) bool {
+    return  main_arr[0][0]  ==  main_arr[1][1]  && main_arr[1][1] == main_arr[2][2] ||
+    main_arr[0][2]  ==  main_arr[1][1] && main_arr[1][1] == main_arr[2][0]    
+}
 
 func is_full (main_arr [3][3]string) bool {
    for y:=0; y<3; y++ {
