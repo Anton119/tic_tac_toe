@@ -37,13 +37,15 @@ fmt.Println(count_moves(main_arr,"X"))
 */
 //fmt.Println(evaluate_moves(main_arr,"X",0 ))
 fmt.Println()
-print_board(best_board(main_arr, "X"))
+//print_board(best_board(main_arr, "X"))
 fmt.Println("???????")
 //print_boards(all_moves(main_arr,"X"))
 fmt.Println()
 //str_print_board(all_moves(main_arr, "X"))
 //print_board(make_a_move(main_arr, "O", 8))
 //scan_and_insert_coordinate(main_arr)
+interface_tictactoe(main_arr)
+
 
 }
 
@@ -241,11 +243,16 @@ func scan_and_insert_coordinate (main_arr[3][3]string) {
 		print_board(new_arr)
 }
 
-/*func switch_player () {
-	scan_and_insert_coordinate(main_arr)
-	beast_board(main_arr, "X")
+// interface 
+func interface_tictactoe (main_arr[3][3]string) {
+    currentPlayer:= "O"
+    for win_or_loose(main_arr) != "_" || is_full(main_arr) == true  {
+	if currentPlayer == "O" { scan_and_insert_coordinate(main_arr)
+	} else { best_board(main_arr, currentPlayer) }
+	// swtich_player
+	currentPlayer = another_player(currentPlayer)
+    }
 }
-*/
 
 /*123
 45X
