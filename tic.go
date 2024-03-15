@@ -2,17 +2,18 @@ package main
 
 import "fmt" 
 
+var check_print bool
 func main () {
 //X - AI, O - HUMAN
+check_print = false 
 main_arr:= [3][3]string {
-
 {"_", "_", "_"},
-{"X","O","X"},
-{"O","X","_"}}
+{"_","_","_"},
+{"_","_","_"}}
 //number_arr:= []int{6,78,32,567,1}
 print_board(main_arr)
 fmt.Println()
-//coordinate(main_arr)
+coordinate(main_arr)
 fmt.Println()
 fmt.Println("Выйграл - " + win_or_loose(main_arr))
 //fmt.Println(max_or_min_element(number_arr, func(x int, y int)bool{return x<y}))
@@ -78,30 +79,30 @@ return sum_of_levels+1
 
 //дополненная функция count_moves , реализующая алгоритм min_max
 func evaluate_moves (main_arr[3][3]string, player string, level int) int {
-if win_or_loose(main_arr) == "X" /*&& is_full(main_arr) == false*/ {
-    fmt.Println("final level FOR X",level)
-    print_board(main_arr)
-    fmt.Println("+1")
-    return 1
-   } else if win_or_loose(main_arr) == "O"/* && is_full(main_arr) == false*/ {
-    fmt.Println("final level FOR O",level)
-    print_board(main_arr)
-    fmt.Println("-1")
-    return -1
-   } else if is_full(main_arr) == true {
-    fmt.Println("final level FOR TIE",level)
-    print_board(main_arr)
-    fmt.Println(" 0")
-    return 0 }
-       evaluation:=all_moves(main_arr, player)
-       var sum_of_evaluations []int
+    if win_or_loose(main_arr) == "X" /*&& is_full(main_arr) == false*/ {
+	if check_print {fmt.Println("final level FOR X",level)
+	print_board(main_arr)
+	fmt.Println("+1")}
+	return 1
+    } else if win_or_loose(main_arr) == "O"/* && is_full(main_arr) == false*/ {
+	if check_print { fmt.Println("final level FOR O",level)
+	print_board(main_arr)
+	fmt.Println("-1")}
+	return -1
+    } else if is_full(main_arr) == true {
+	if check_print {fmt.Println("final level FOR TIE",level)
+	print_board(main_arr)
+	fmt.Println(" 0")}
+	return 0 }
+        evaluation:=all_moves(main_arr, player)
+        var sum_of_evaluations []int
              for i:=0; i<len(evaluation); i++ {
              // запись результатов оценок веток в массив                  // player = another_player(player)
              sum_of_evaluations=append(sum_of_evaluations, evaluate_moves(evaluation[i], another_player(player), level+1 ))
              }
-             fmt.Println("level ",level)
-             str_print_board(evaluation)
-                print_el(sum_of_evaluations)
+             //fmt.Println("level ",level)
+             if check_print {str_print_board(evaluation)
+                print_el(sum_of_evaluations)}
                    if player == "X" { return  max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x>y})
                    } else { return max_or_min_element(sum_of_evaluations,func(x int, y int)bool{return x<y})} 
 }
@@ -228,30 +229,41 @@ var index int
 
 
 
-func scan_and_insert_coordinate (main_arr[3][3]string) {
+func scan_and_insert_coordinate (main_arr[3][3]string)[3][3]string {
     var player_coordinate int
-    new_arr := [3][3]string{}
     //arr :=[3][3]string{{"_","_","_"},{"_","_","_"},{"_","_","_"}}
-    player := "X"
+    player := "O"
 	for { 
 	    fmt.Scan(&player_coordinate)
 	    sign  := extract_from_arr(main_arr, player_coordinate)
-	    if sign == "_" { new_arr = make_a_move(main_arr, player, player_coordinate); break
-	    } else if sign == "O" { fmt.Println("Невозможно сделать ход."); fmt.Println("Сделайте ход еще раз")}
+	    if sign == "_" { main_arr = make_a_move(main_arr, player, player_coordinate); break
+	    } else if sign == "X" { fmt.Println("Невозможно сделать ход.");
+	     fmt.Println("Сделайте ход еще раз")} else if sign == "O" { fmt.Println("Невозможно сделать ход.");
+	     fmt.Println("Сделайте ход еще раз")}
 
 	}
-		print_board(new_arr)
+		//print_board(main_arr)
+		fmt.Println()
+		coordinate(main_arr)
+		return main_arr
 }
+
+
+//    не (a и b) = (не a) или (не b)
+//    не (a или b) = (не a) и (не b)
 
 // interface 
 func interface_tictactoe (main_arr[3][3]string) {
     currentPlayer:= "O"
-    for win_or_loose(main_arr) != "_" || is_full(main_arr) == true  {
-	if currentPlayer == "O" { scan_and_insert_coordinate(main_arr)
-	} else { best_board(main_arr, currentPlayer) }
+    //  НЕ( если все клетки заполнены  ИЛИ выйграл Х ИЛИ выйграл О )
+    for win_or_loose(main_arr) == "_" && is_full(main_arr) == false  {
+	if currentPlayer == "O" { main_arr = scan_and_insert_coordinate(main_arr)
+	} else { main_arr  = best_board(main_arr, currentPlayer); print_board(main_arr) }
 	// swtich_player
 	currentPlayer = another_player(currentPlayer)
+	fmt.Println("inside")
     }
+    fmt.Println("outside")
 }
 
 /*123
